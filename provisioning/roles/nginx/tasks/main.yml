@@ -1,0 +1,10 @@
+---
+- name: Install nginx
+  yum: name=nginx state=latest
+
+- name: Set nginx service to start on boot
+  service: name=nginx enabled=true
+
+- name: Put nginx.conf
+  template: src=vhosts.conf.j2 dest=/etc/nginx/conf.d/virtual.app.conf backup=true mode=0644
+  notify: restart nginx
