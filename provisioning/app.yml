@@ -1,6 +1,8 @@
-- hosts: server
+- hosts: web_server
   sudo: yes
   roles:
     - yum-update
     - nginx
     - git
+    - epel-release
+    - ansible

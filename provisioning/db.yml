@@ -1,0 +1,6 @@
+- hosts: db_server
+  sudo: yes
+  roles:
+    - yum-update
+    - mysql
+    - git
