@@ -3,7 +3,7 @@
 ansible-playbook app.yml -i inventory/app
 ```
 
-## pem file upload to set up server
+## pem file upload to provisioning server
 ```
 scp -i ec2-key.pem ec2-key.pem ec2-user@<管理インスタンスのPublic_IP>:~/
 ```
