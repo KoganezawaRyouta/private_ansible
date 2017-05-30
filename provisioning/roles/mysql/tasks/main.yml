@@ -9,7 +9,7 @@
   notify: restart mysql
 
 - name: copy my.cnf file
-  copy: src=my.cnf.j2 dest=/etc/my.cnf
+  template: src=my.cnf.j2 dest=/etc/my.cnf
   notify: restart mysql
 
 - name: Set mysql service to start on boot
