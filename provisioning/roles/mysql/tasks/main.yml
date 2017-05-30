@@ -1,6 +1,6 @@
 ---
 - name: Install mysql rpm
-- yum: name="http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm" state="present"
+  yum: name="http://dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm" state="present"
 
 - name: Install mysql
   yum: name={{ item }} state=latest
