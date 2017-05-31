@@ -1,0 +1,13 @@
+- name: Install dependencies for gvm
+  yum: name={{ item }} state=latest
+  with_items:
+    - curl
+    - git
+    - mercurial
+    - devel
+    - devel
+    - bison
+    - gcc
+
+- name: install gvm
+  command: sh /tmp/install.sh ${go_version}

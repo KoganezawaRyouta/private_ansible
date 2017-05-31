@@ -6,3 +6,5 @@
     - git
     - epel-release
     - ansible
+    - rbenv
+    - gvm
