@@ -4,10 +4,29 @@
     - curl
     - git
     - mercurial
-    - devel
-    - devel
+    - make
+    - binutils
     - bison
     - gcc
 
-- name: install gvm
-  command: sh /tmp/install.sh ${go_version}
+- name: Install Golang gvm
+  sudo: false
+  shell: bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
+      executable="/bin/bash"
+  ignore_errors: true
+  tags:
+    - golang
+
+- name: Install Golang
+  sudo: false
+  shell: source ~/.bash_profile && source ~/.gvm/scripts/gvm && gvm install go1.4 executable="/bin/bash"
+  ignore_errors: false
+  tags:
+    - golang
+
+- name: Install Golang target version
+  sudo: false
+  shell: source ~/.bash_profile && source ~/.gvm/scripts/gvm && gvm use go1.4 && gvm install {{ go_version }} executable="/bin/bash"
+  ignore_errors: false
+  tags:
+    - golang
