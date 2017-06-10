@@ -10,23 +10,54 @@
     - gcc
 
 - name: Install Golang gvm
-  sudo: false
+  sudo: yes
+  sudo_user: "{{ gvm_user }}"
   shell: bash < <(curl -s -S -L https://raw.githubusercontent.com/moovweb/gvm/master/binscripts/gvm-installer)
       executable="/bin/bash"
   ignore_errors: true
-  tags:
-    - golang
+
+- name: Put zshrc for gvm
+  sudo: yes
+  sudo_user: "{{ gvm_user }}"
+  lineinfile: >
+    dest="~/.zshrc"
+    line='[[ -s "/home/{{ gvm_user }}/.gvm/scripts/gvm" ]] && source "/home/{{ gvm_user }}/.gvm/scripts/gvm"'
 
 - name: Install Golang
-  sudo: false
-  shell: source ~/.bash_profile && source ~/.gvm/scripts/gvm && gvm install go1.4 executable="/bin/bash"
-  ignore_errors: false
-  tags:
-    - golang
+  shell: "sudo -iu {{ gvm_user }} export GVM_ROOT=/home/{{ gvm_user }}/.gvm && source /home/{{ gvm_user }}/.gvm/scripts/gvm && gvm install go1.4"
+  ignore_errors: true
+
+- name: Use go1.4
+  shell: "sudo -iu {{ gvm_user }} export GVM_ROOT=/home/{{ gvm_user }}/.gvm && source /home/{{ gvm_user }}/.gvm/scripts/gvm && gvm use go1.4"
 
 - name: Install Golang target version
-  sudo: false
-  shell: source ~/.bash_profile && source ~/.gvm/scripts/gvm && gvm use go1.4 && gvm install {{ go_version }} executable="/bin/bash"
-  ignore_errors: false
-  tags:
-    - golang
+  shell: "sudo -iu {{ gvm_user }} export GVM_ROOT=/home/{{ gvm_user }}/.gvm && source /home/{{ gvm_user }}/.gvm/scripts/gvm && gvm use go1.4 && gvm install {{ go_version }}"
+  ignore_errors: true
+
+- name: Wget direnv binarty
+  sudo: yes
+  sudo_user: "{{ gvm_user }}"
+  command: zsh -lc "wget https://github.com/direnv/direnv/releases/download/v2.11.3/direnv.linux-386"
+  ignore_errors: true
+
+- name: make direnv
+  shell: "sudo -iu {{ gvm_user }} cp direnv.linux-386 direnv && rm -rf direnv.linux-386 && chmod +x direnv && mkdir -p /home/{{ gvm_user }}/bin && mv direnv /home/{{ gvm_user}}/bin/"
+  ignore_errors: true
+
+- name: Put zshrc direnv
+  sudo: yes
+  sudo_user: "{{ gvm_user }}"
+  lineinfile: >
+    dest="~/.zshrc"
+    line={{ item }}
+  with_items:
+    - 'export EDITOR=vim'
+    - 'eval "$(direnv hook zsh)"'
+
+- name: Make golang warking space
+  shell: "sudo -iu {{ gvm_user }} mkdir -p go"
+
+- name: Put .envrc
+  sudo: yes
+  sudo_user: "{{ gvm_user }}"
+  copy: src=.envrc dest=~/go/.envrc

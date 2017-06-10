@@ -1,0 +1,39 @@
+---
+- name: install zsh
+  yum: name=zsh state=latest
+
+- name: Changed login shell
+  shell: "chsh -s /bin/zsh ec2-user"
+
+- name: Put zshrc
+  sudo: yes
+  sudo_user: "{{ zsh_user }}"
+  copy: src=.zshrc dest=~/.zshrc
+
+- name: Install oh-my-zsh
+  shell: "sudo -iu {{ zsh_user }} curl -L https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh | sh"
+
+
+- name: Make loadlib dir
+  sudo: yes
+  sudo_user: "{{ zsh_user }}"
+  command: "mkdir -p /home/{{ zsh_user }}/.oh-my-zsh/custom/loadlib"
+
+- name: Insatall 
+  sudo: yes
+  sudo_user: "{{ zsh_user }}"
+  git: repo=https://github.com/zsh-users/zsh-autosuggestions dest=/home/{{ zsh_user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+- name: Put oh-my-zsh path
+  sudo: yes
+  sudo_user: "{{ zsh_user }}"
+  lineinfile: >
+    dest="~/.zshrc"
+    line={{ item }}
+  with_items:
+    - 'export ZSH=/home/{{ zsh_user }}/.oh-my-zsh'
+    - 'ZSH_THEME="bira"'
+    - 'source $ZSH/oh-my-zsh.sh'
+    - 'plugins=(git)'
+    - 'plugins+=(zsh-autosuggestions)'
+    - 'source /home/{{ zsh_user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh'

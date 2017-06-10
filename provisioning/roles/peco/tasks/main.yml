@@ -1,0 +1,22 @@
+---
+- name: Wget peco
+  sudo: yes
+  sudo_user: "{{ peco_user}}"
+  command: zsh -lc "wget https://github.com/peco/peco/releases/download/v0.5.1/peco_linux_386.tar.gz"
+
+- name: make peco
+  shell: "sudo -iu {{ peco_user }} tar -C /home/{{ peco_user }}/ -xzf /home/{{ peco_user }}/peco_linux_386.tar.gz && chmod +x /home/{{ peco_user }}/peco_linux_386/peco && mv /home/{{ peco_user }}/peco_linux_386/peco /home/{{ peco_user }}/bin/ && rm -rf /home/{{ peco_user }}/peco_linux_386.tar.gz"
+
+- name: Put function
+  sudo: yes
+  sudo_user: "{{ peco_user }}"
+  copy: src=peco-select-history dest=~/.oh-my-zsh/custom/loadlib/peco-select-history
+
+- name: Put function path
+  sudo: yes
+  sudo_user: "{{ peco_user }}"
+  lineinfile: >
+    dest="~/.zshrc"
+    line={{ item }}
+  with_items:
+    - 'loadlib /home/{{ peco_user }}/.oh-my-zsh/custom/loadlib/peco-select-history'
