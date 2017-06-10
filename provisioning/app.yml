@@ -10,3 +10,5 @@
     - rbenv
     - gvm
     - peco
+    - vim
+    - python

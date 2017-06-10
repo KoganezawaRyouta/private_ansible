@@ -1,0 +1,53 @@
+---
+- name: Install dependencies for python-build
+  yum: name={{ item }} state=latest
+  with_items:
+    - cmake
+    - patch
+    - gcc-c++
+    - boost-devel
+    - libicu-devel
+
+- name: Install pyenv
+  sudo: yes
+  sudo_user: "{{ python_user }}"
+  command: "git clone git://github.com/yyuu/pyenv.git /home/{{ python_user }}/.pyenv"
+  ignore_errors: true
+
+- name: Put function file
+  sudo: yes
+  sudo_user: "{{ peco_user }}"
+  copy: src=pyenv dest=~/.oh-my-zsh/custom/loadlib/pyenv
+
+- name: Put function path
+  sudo: yes
+  sudo_user: "{{ python_user }}"
+  lineinfile: >
+    dest="~/.zshrc"
+    line={{ item }}
+  with_items:
+    - 'loadlib /home/{{ peco_user }}/.oh-my-zsh/custom/loadlib/pyenv'
+
+- name: Install pyenv-virtualenv
+  sudo: yes
+  sudo_user: "{{ python_user }}"
+  command: "git clone git://github.com/yyuu/pyenv-virtualenv.git /home/{{ python_user }}/.pyenv/plugins/"
+  ignore_errors: true
+
+- name: Install python2.7
+  sudo: yes
+  sudo_user: "{{ python_user }}"
+  command: "/home/{{ python_user }}/.pyenv/bin/pyenv install 2.7"
+  ignore_errors: true
+
+- name: Install python3.5
+  sudo: yes
+  sudo_user: "{{ python_user }}"
+  command: "/home/{{ python_user }}/.pyenv/bin/pyenv install 3.5.0"
+  ignore_errors: true
+
+- name: Use python2.7
+  sudo: yes
+  sudo_user: "{{ python_user }}"
+  command: "/home/{{ python_user }}/.pyenv/bin/pyenv global 2.7"
+

@@ -1,0 +1,26 @@
+---
+- name: Get install.sh for neobundle
+  sudo: yes
+  sudo_user: "{{ vim_user }}"
+  command: zsh -lc "curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > /home/{{ vim_user }}/install.sh"
+
+- name: chmod install.sh`
+  sudo: yes
+  sudo_user: "{{ vim_user }}"
+  command: zsh -lc "chmod +x /home/{{ rbenv_user }}/install.sh"
+
+- name: Install neobundle
+  sudo: yes
+  sudo_user: "{{ vim_user }}"
+  command: zsh -lc "/home/{{ rbenv_user }}/install.sh"
+
+- name: Put colorscheme
+  shell: "git clone https://github.com/w0ng/vim-hybrid && cd vim-hybrid/colors && mkdir -p /home/{{ vim_user }}/.vim/colors && cp hybrid.vim  /home/{{ vim_user }}/.vim/colors/hybrid.vim && rm -rf /home/{{ vim_user }}/vim-hybrid"
+
+- name: Put vimrc
+  sudo: yes
+  sudo_user: "{{ vim_user }}"
+  copy: src=.vimrc dest=~/.vimrc
+
+- name: Install cmake
+  yum: name=cmake state=latest

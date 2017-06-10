@@ -34,7 +34,7 @@
   shell: "sudo -iu {{ gvm_user }} export GVM_ROOT=/home/{{ gvm_user }}/.gvm && source /home/{{ gvm_user }}/.gvm/scripts/gvm && gvm use go1.4 && gvm install {{ go_version }}"
   ignore_errors: true
 
-- name: Wget direnv binarty
+- name: Wget direnv binary
   sudo: yes
   sudo_user: "{{ gvm_user }}"
   command: zsh -lc "wget https://github.com/direnv/direnv/releases/download/v2.11.3/direnv.linux-386"
@@ -55,9 +55,12 @@
     - 'eval "$(direnv hook zsh)"'
 
 - name: Make golang warking space
-  shell: "sudo -iu {{ gvm_user }} mkdir -p go"
+  shell: "sudo -iu {{ gvm_user }} mkdir -p go/src/github.com"
 
 - name: Put .envrc
   sudo: yes
   sudo_user: "{{ gvm_user }}"
   copy: src=.envrc dest=~/go/.envrc
+
+- name: chmod gvm dir
+  command: "chown -R ec2-user:ec2-user /home/{{ gvm_user }}/.gvm/"
