@@ -5,7 +5,6 @@
     - cmake
     - patch
     - gcc-c++
-    - boost-devel
     - libicu-devel
 
 - name: Install pyenv
