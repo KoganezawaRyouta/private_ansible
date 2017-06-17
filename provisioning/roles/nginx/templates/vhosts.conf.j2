@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name  ec2.app.auge.horus.co.jp;
+    server_name aw-auge-horus.de;
 
     location / {
       proxy_set_header X-Real-IP $remote_addr;
@@ -15,7 +15,7 @@ server {
 
 server {
     listen 80;
-    server_name  ec2.api.auge.horus.co.jp;
+    server_name aw-api-auge-horus.de;
 
     location / {
       proxy_set_header X-Real-IP $remote_addr;
