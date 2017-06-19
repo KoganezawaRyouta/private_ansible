@@ -1,0 +1,67 @@
+# install supervisor
+sudo pip install supervisor
+ 
+# create configure file
+sudo touch /etc/supervisord.conf
+
+# create extra configure file's directory
+sudo mkdir /etc/supervisord.d
+
+# create log file's directory
+sudo mkdir /var/log/supervisor/
+ 
+# edit supervisord.conf
+sudo vi /etc/supervisord.conf
+```
+[supervisord]
+# log directory
+logfile=/var/log/supervisor/supervisord.log
+
+# pid file
+pidfile=/var/run/supervisord.pid
+
+[inet_http_server]
+port=127.0.0.1:9001
+
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+[supervisorctl]
+serverurl=unix:///var/tmp/supervisor.sock
+serverurl=http://127.0.0.1:9001
+username = hoge
+password = 123
+prompt = mysupervisor
+
+# 追加設定ファイル読み込み
+[include]
+files = supervisord.d/*.ini
+```
+
+# Download supervisor rc script
+sudo curl -o /etc/rc.d/init.d/supervisord https://raw.githubusercontent.com/Supervisor/initscripts/master/redhat-init-equeffelec
+sudo chmod 755 /etc/rc.d/init.d/supervisord
+sudo chkconfig --add supervisord
+
+# logrotate
+sudo sh -c "echo '/var/log/supervisor/*.log {
+       missingok
+       weekly
+       notifempty
+       nocompress
+}' > /etc/logrotate.d/supervisor"
+
+
+# 実行ファイルのパスを切り替える
+$ which supervisord
+/usr/local/bin/supervisord
+$ which supervisorctl
+/usr/local/bin/supervisorctl
+
+vim /etc/rc.d/init.d/supervisord
+
+# supervisord start
+sudo /etc/init.d/supervisord start
+
+
+
