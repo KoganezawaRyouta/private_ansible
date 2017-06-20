@@ -29,7 +29,6 @@ endif
   NeoBundle 'tomasr/molokai'
   NeoBundle 'w0ng/vim-hybrid'
   NeoBundle "ctrlpvim/ctrlp.vim"
-
   NeoBundle 'nixprime/cpsm', {
   \ 'build': {
   \   'others': 'sh install.sh'
@@ -42,6 +41,8 @@ endif
 " vim コマンドラインモードで :Unite colorscheme -auto-preview を実行してカラースキームが一覧表示される
   NeoBundle 'Shougo/unite.vim'
   NeoBundle 'ujihisa/unite-colorscheme'
+
+  NeoBundle 'fatih/vim-go'
 
 " syntastic_mode_map は 'active' もしくは 'passive' を指定します。
 " 'active' だとバッファを保存するたびにsyntasticが走り、 'passive' の場合は :SyntasticCheck 実行時に走ります。
