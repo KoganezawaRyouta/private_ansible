@@ -81,12 +81,6 @@ endif
   " Atomのcmd + d的なことができるやつ ctrl+n で複数行選択
   NeoBundle 'terryma/vim-multiple-cursors'
 
-  NeoBundle     'vim-ruby/vim-ruby'
-
-" My Bundles here:
-" Refer to |:NeoBundle-examples|.
-" Note: You don't set neobundle setting in .gvimrc!
-
 call neobundle#end()
 
 " Required:
@@ -121,7 +115,6 @@ endif
 " ここからインストールするプラグイン
 call dein#add('Shougo/dein.vim')
 call dein#add('Shougo/neocomplcache.vim')
-call dein#add('Shougo/neocomplcache-rsense.vim')
 
 " neocomplcacheの設定
 " Disable AutoComplPop.
@@ -139,17 +132,6 @@ let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 
 let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
-
-" Rsense用の設定
-if !exists('g:neocomplcache_omni_patterns')
-    let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-
-"rsenseのインストールフォルダがデフォルトと異なるので設定
-let g:rsenseHome = expand("*Rsenseのインストールパスをここにペースト*")
-let g:rsenseUseOmniFunc = 1
 
 set ruler
 set number
@@ -227,6 +209,7 @@ else
 endif
 
 set mouse=a
+
 set ttymouse=xterm2
 
 " ファイル名表示
@@ -234,8 +217,10 @@ set statusline+=%<%F
 
 " ハイライト検索
 set hlsearch
+
 " 検索した際に最後の語句の次に最初の語句にループしないようにする
 set nowrapscan
+
 " F3でハイライトを消す
 nnoremap <F3> :noh<CR>
 
